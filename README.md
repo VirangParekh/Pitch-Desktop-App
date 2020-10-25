@@ -31,3 +31,14 @@ $ deactivate
 
 > - Run the server using:
 >   > `$ python manage.py runserver`
+
+# Code styles and other things:
+- Use the `black` formatter to style the text, run black using
+> `$ black .`
+> OR
+> ~~~
+> $ pip install black
+> $ black .
+> ~~~
+- Update the requirements file in the roots directory using;
+> `pip freeze > requirements.txt`
