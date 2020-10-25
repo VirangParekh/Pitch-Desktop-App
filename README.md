@@ -40,5 +40,8 @@ $ deactivate
 > $ pip install black
 > $ black .
 > ~~~
+- For the frontend development use the `Prettier` code formatter;
+  - If using VS Code, there is an extension availble
+  - Otherwise, find help at: https://prettier.io/
 - Update the requirements file in the roots directory using;
 > `pip freeze > requirements.txt`
