@@ -31,3 +31,17 @@ $ deactivate
 
 > - Run the server using:
 >   > `$ python manage.py runserver`
+
+# Code styles and other things:
+- Use the `black` formatter to style the text, run black using
+> `$ black .`
+> OR
+> ~~~
+> $ pip install black
+> $ black .
+> ~~~
+- For the frontend development use the `Prettier` code formatter;
+  - If using VS Code, there is an extension availble
+  - Otherwise, find help at: https://prettier.io/
+- Update the requirements file in the roots directory using;
+> `pip freeze > requirements.txt`
