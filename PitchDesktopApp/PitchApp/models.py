@@ -13,10 +13,11 @@ class User(AbstractUser):
 
 class Artist(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    artist_name = models.CharField(
-        verbose_name="Artist Name", max_length=250, unique=True
-    )
+    artist_name = models.CharField(verbose_name="Artist Name", max_length=250)
     country = CountryField()
+
+    # class Meta:
+    # unique_together = ["user", "artist_name"]
 
 
 class NormalUser(models.Model):
@@ -55,9 +56,8 @@ class Album(models.Model):
         ],
     )
     cover_file = models.ImageField(verbose_name="Album Cover")
-    artist_name = models.ForeignKey(
+    artist = models.ForeignKey(
         Artist,
-        to_field="artist_name",
         verbose_name="Name of the Artist",
         on_delete=models.CASCADE,
     )
