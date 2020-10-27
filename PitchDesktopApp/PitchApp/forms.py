@@ -35,7 +35,7 @@ class NormalUserSignUpForm(UserCreationForm):
         model = User
         fields = ["username", "password1", "password2", "email"]
 
-    @transaction.atomic
+    # @transaction.atomic
     def save(self):
         user = super().save(commit=False)
         user.is_user = True

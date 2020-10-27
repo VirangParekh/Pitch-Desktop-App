@@ -23,5 +23,8 @@ urlpatterns = [
     path(
         "accounts/signup/normal_user", NormalUserSignUpView, name="normal_user_signup"
     ),
+    path("accounts/login", LoginView, name="login"),
+    path("accounts/artist_home", ArtistHomeView, name="artist_home"),
+    path("accounts/user_home", UserHomeView, name=""), 
     path("", HomeView, name="home"),
 ]
