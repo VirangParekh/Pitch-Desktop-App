@@ -1,6 +1,7 @@
 from django import forms
+from django.forms import ModelForm, Form
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Artist, NormalUser
+from .models import User, Artist, NormalUser, Album
 from django.db import transaction
 from django_countries.fields import CountryField
 
@@ -47,3 +48,13 @@ class NormalUserSignUpForm(UserCreationForm):
         normal_user.card = self.cleaned_data.get("card")
         normal_user.save()
         return user
+
+
+class AlbumUploadForm(ModelForm):
+    class Meta:
+        model = Album
+        exclude = ["artist"]
+
+
+class SongUploadForm(Form):
+    pass

@@ -62,9 +62,12 @@ class Album(models.Model):
         on_delete=models.CASCADE,
     )
 
+    def __str__(self):
+        return self.title
+
 
 class Audio(models.Model):
-    playlist_id = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    # playlist_id = models.ForeignKey(Playlist, on_delete=models.CASCADE, null=True)
     title = models.CharField(verbose_name="Audio Title", max_length=100)
     duration = models.DurationField(verbose_name="Duration")
     times_played = models.PositiveIntegerField(
@@ -80,12 +83,14 @@ class Features(models.Model):
 
 class Song(models.Model):
     audio_id = models.ForeignKey(Audio, on_delete=models.CASCADE)
-    album_id = models.ForeignKey(Album, on_delete=models.CASCADE)
+    album_id = models.ForeignKey(Album, on_delete=models.CASCADE, null=True)
 
 
 class Tag(models.Model):
     audio_id = models.ForeignKey(Audio, on_delete=models.CASCADE)
-    tag = models.CharField(verbose_name="Tag", max_length=12)
+    tag1 = models.CharField(verbose_name="Tag 1", max_length=12)
+    tag2 = models.CharField(verbose_name="Tag 2", max_length=12)
+    tag3 = models.CharField(verbose_name="Tag 3", max_length=12)
 
 
 class Podcast(models.Model):

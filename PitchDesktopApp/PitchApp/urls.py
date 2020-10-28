@@ -27,5 +27,6 @@ urlpatterns = [
     path("accounts/artist_home", ArtistHomeView, name="artist_home"),
     path("accounts/user_home", UserHomeView, name="user_home"),
     path("accounts/logout", LogoutView, name="logout"),
+    path("album_upload", UploadAlbum, name="album_upload"),
     path("", HomeView, name="home"),
 ]
