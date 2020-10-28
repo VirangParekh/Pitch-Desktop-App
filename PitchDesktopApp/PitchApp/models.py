@@ -24,7 +24,7 @@ class NormalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
     account_type = models.CharField(verbose_name="Type of Account", max_length=50)
     country = CountryField()
-    age = models.IntegerField(verbose_name="Age")
+    age = models.IntegerField(verbose_name="Age", null=True)
     card = models.CharField(verbose_name="Card Number", max_length=19)
 
 

@@ -28,14 +28,14 @@ class ArtistSignUpForm(UserCreationForm):
 class NormalUserSignUpForm(UserCreationForm):
     account_type = forms.CharField(max_length=50, required=True)
     country = CountryField().formfield()
-    age = forms.IntegerField(min_value=13, required=True)
+    age = forms.IntegerField()
     card = forms.CharField(max_length=19)
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ["username", "password1", "password2", "email"]
 
-    # @transaction.atomic
+    @transaction.atomic
     def save(self):
         user = super().save(commit=False)
         user.is_user = True
