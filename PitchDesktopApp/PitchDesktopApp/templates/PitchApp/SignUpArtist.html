@@ -1,0 +1,8 @@
+<h1>Artist SignUp</h1>
+
+{% block content %}
+<form method="POST">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">SignUp</button>
+</form>
+{% endblock %}
