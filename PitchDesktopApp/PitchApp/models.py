@@ -75,6 +75,9 @@ class Audio(models.Model):
     )
     audio_file = models.FileField(verbose_name="Audio File")
 
+    def __str__(self):
+        return self.title
+
 
 class Features(models.Model):
     playlist_id = models.ForeignKey(Playlist, on_delete=models.CASCADE)
