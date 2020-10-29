@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm, Form
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Artist, NormalUser, Album
+from .models import User, Artist, NormalUser, Album, Audio, Song
 from django.db import transaction
 from django_countries.fields import CountryField
 
@@ -52,5 +52,18 @@ class AlbumUploadForm(ModelForm):
         exclude = ["artist"]
 
 
+<<<<<<< HEAD
 class SongUploadForm(Form):
     pass
+=======
+class AudioForm(ModelForm):
+    class Meta:
+        model = Audio
+        fields = "__all__"
+
+
+class SongUploadForm(ModelForm):
+    class Meta:
+        model = Song
+        fields = ["album_id"]
+>>>>>>> 83fefc5155eb7fe7365e02a81fa9184b47738fc5

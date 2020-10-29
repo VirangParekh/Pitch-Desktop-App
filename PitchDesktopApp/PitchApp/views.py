@@ -3,7 +3,12 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from .models import User
-from .forms import ArtistSignUpForm, NormalUserSignUpForm, AlbumUploadForm
+from .forms import (
+    ArtistSignUpForm,
+    NormalUserSignUpForm,
+    AlbumUploadForm,
+    SongUploadForm,
+)
 
 # Create your views here.
 
@@ -90,3 +95,18 @@ def UploadAlbum(request):
         else:
             form = AlbumUploadForm()
         return render(request, "PitchApp/UploadAlbum.html", {"form": form})
+
+
+@login_required(login_url="/pitch/accounts/login")
+def UploadSong(request):
+    if request.user.is_artist:
+        """if request.method == "POST":
+        form = SongUploadForm(request.POST)
+        if form.is_valid():
+            new_song = form.save(commit=False)"""
+        form = SongUploadForm()
+
+
+def FormCheck(request):
+    form = SongUploadForm()
+    return render(request, "FormCheck.html", {"form": form})
