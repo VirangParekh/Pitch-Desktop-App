@@ -52,10 +52,6 @@ class AlbumUploadForm(ModelForm):
         exclude = ["artist"]
 
 
-<<<<<<< HEAD
-class SongUploadForm(Form):
-    pass
-=======
 class AudioForm(ModelForm):
     class Meta:
         model = Audio
@@ -66,4 +62,3 @@ class SongUploadForm(ModelForm):
     class Meta:
         model = Song
         fields = ["album_id"]
->>>>>>> 83fefc5155eb7fe7365e02a81fa9184b47738fc5

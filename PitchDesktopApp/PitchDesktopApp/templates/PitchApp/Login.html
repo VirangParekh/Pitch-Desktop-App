@@ -101,14 +101,13 @@
         <hr>
         <br>
         <h2>To continue, log in to Spotify.</h2>
+        <form method='POST'>
         {% csrf_token %}
-        <form>
-            <label for="email">Username</label>
+            <label for="{{form.username.id_for_label}}">Username</label>
             {{form.username}}
-            <label for="password">Password</label>
+            <label for="form.password.id_for_label">Password</label>
             {{form.password}}
-
-            <button>Log in</button>
+            <button type="submit">Log in</button>
             <p class="existing_user">Don't have an account ?<a href='{%url 'normal_user_signup'%}'>Sign up</a></p>
         </form>
     </div>

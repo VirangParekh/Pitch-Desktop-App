@@ -94,6 +94,12 @@
         a {
             color: rgb(29, 185, 84);
         }
+
+        ul{
+            list-style-type: none;
+            color: red;
+            font-size: 20px;
+        }
     </style>
 </head>
 
@@ -106,25 +112,30 @@
         <hr>
         <br>
         <h2>Sign up for free to start listening.</h2>
+        <form method="post">
         {% csrf_token %}
-        <form>
-            <label for="email">What's your email?</label>
+            {{ form.non_field_errors }}
+            {{form.email.errors}}
+            <label for="{{form.email.id_for_label}}">What's your email?</label>
             {{form.email}}
-            <label for="email">Create a password</label>
+            {{form.email.errors}}
+            <label for="{{form.password1.id_for_label}}">Create a password</label>
             {{form.password1}}
-            <label for="email">Confirm your password</label>
-            {{form.password1}}
-            <label for="email">What should we call you?</label>
+            <label for="{{form.password2.id_for_label}}">Confirm your password</label>
+            {{form.password2}}
+            {{form.username.errors}}
+            <label for="{{form.username.id_for_label}}">What should we call you?</label>
             {{form.username}}
             <p class="username_tag">This appear on your profile</p>
-            <label for="email">What's your Age?</label>
+            <label for="{{form.age.id_for_label}}">What's your Age?</label>
             {{form.age}}
-            <label for="gender">Which country do you live in?</label>
+            <label for="{{form.country.id_for_label}}">Which country do you live in?</label>
             {{form.country}}
-            <button>Sign Up</button>
-            <p class="existing_user">Have an account?<a href='{%url 'login' %}'>Log in.</a></p>
+            <button type="submit">Sign Up</button>
         </form>
+        <p class="existing_user">Have an account?<a href='{%url 'login' %}'>Log in.</a></p>
     </div>
 </body>
-
 </html>
+
+<!-- Need to js form validation for password patter and to be samw all so on the age  -->
