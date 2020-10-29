@@ -111,11 +111,12 @@
         <hr>
         <br>
         <h2>To continue, log in to Spotify.</h2>
+        {% csrf_token %}
         <form>
-            <label for="email">Email address</label>
-            <input type="email" class='box'>
+            <label for="email">Username</label>
+            {{form.username}}
             <label for="password">Password</label>
-            <input type="password" class='box'>
+            {{form.password}}
 
             <button>Log in</button>
             <p class="existing_user">Don't have an account ?<a href='#'>Sign up</a></p>

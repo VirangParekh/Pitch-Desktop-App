@@ -27,10 +27,8 @@ class ArtistSignUpForm(UserCreationForm):
 
 
 class NormalUserSignUpForm(UserCreationForm):
-    account_type = forms.CharField(max_length=50, required=True)
     country = CountryField().formfield()
     age = forms.IntegerField()
-    card = forms.CharField(max_length=19)
 
     class Meta(UserCreationForm.Meta):
         model = User
@@ -42,10 +40,8 @@ class NormalUserSignUpForm(UserCreationForm):
         user.is_user = True
         user.save()
         normal_user = NormalUser.objects.create(user=user)
-        normal_user.account_type = self.cleaned_data.get("account_type")
         normal_user.country = self.cleaned_data.get("country")
         normal_user.age = self.cleaned_data.get("age")
-        normal_user.card = self.cleaned_data.get("card")
         normal_user.save()
         return user
 

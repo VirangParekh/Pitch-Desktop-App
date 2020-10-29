@@ -1,7 +1,117 @@
-<h1>Login</h1>
-{% block content %}
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Login</button>
-</form>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+        * {
+            margin: 10px;
+            padding: 0;
+            font-family: spotify-circular, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            margin: auto;
+            width: 35%;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 550;
+        }
+
+        input {
+            width: 100%;
+            appearance: none;
+            background-image: none;
+            border: 0px;
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0.25px;
+            width: 100%;
+            background-color: rgb(255, 255, 255);
+            color: rgb(24, 24, 24);
+            border-radius: 4px;
+            padding: 14px;
+            box-shadow: rgb(189, 189, 189) 0px 0px 0px 1px inset;
+        }
+        button {
+            border: 0px;
+            border-radius: 500px;
+            cursor: default;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transition-duration: 33ms;
+            transition-property: background-color, border-color, color, box-shadow, filter, transform;
+            user-select: none;
+            vertical-align: middle;
+            padding: 17px 48px;
+            background-color: rgb(29, 185, 84);
+            color: rgb(255, 255, 255);
+            width: 80%;
+            margin-top: 10px;
+            margin-left: 15%;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.04);
+            background-color: rgb(30, 215, 96);
+            color: rgb(255, 255, 255);
+        }
+
+        .existing_user {
+            text-align: center;
+        }
+
+        a {
+            color: rgb(29, 185, 84);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <a href="#" style="color: inherit; text-decoration:none; text-justify:auto"><i class="fab fa-spotify"></i>Pitch
+        </a>
+    </div>
+    <div class="container">
+        <hr>
+        <br>
+        <h2>To continue, log in to Spotify.</h2>
+        {% csrf_token %}
+        <form>
+            <label for="email">Username</label>
+            {{form.username}}
+            <label for="password">Password</label>
+            {{form.password}}
+
+            <button>Log in</button>
+            <p class="existing_user">Don't have an account ?<a href='{%url 'normal_user_signup'%}'>Sign up</a></p>
+        </form>
+    </div>
+</body>
+
+</html>
