@@ -61,6 +61,8 @@ def LoginView(request):
                 return redirect("/pitch/accounts/user_home")
             if logged_in_user.is_artist:
                 return redirect("/pitch/accounts/artist_home")
+        else:
+            return render(request, "ErrorPage.html")
     else:
         form = AuthenticationForm()
     return render(request, "PitchApp/Login.html", {"form": form})
