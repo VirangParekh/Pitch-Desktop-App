@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import User
+from .models import User, Audio, Album, Artist, Song, Tag
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
@@ -103,13 +103,35 @@ def UploadAlbum(request):
 @login_required(login_url="/pitch/accounts/login")
 def UploadSong(request):
     if request.user.is_artist:
-        """if request.method == "POST":
-        form = SongUploadForm(request.POST)
-        if form.is_valid():
-            new_song = form.save(commit=False)"""
-        form = SongUploadForm()
+        if request.method == "POST":
+            form = SongUploadForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data["title"]
+                duration = form.cleaned_data["duration"]
+                audio_file = form.cleaned_data["audio_file"]
+                tags = form.cleaned_data["tags"]
+                album_name = form.cleaned_data["album_name"]
+                audio = Audio(
+                    title=title,
+                    duration=duration,
+                    times_played=0,
+                    audio_file=audio_file,
+                )
+                artist_deatils = Artist.objects.filter(user=request.user.id)
+                album = Album.objects.filter(artist=artist_deatils.id, title=album_name)
+                new_song = Song(audio_id=audio.id, album_id=album.id)
+                audio.save()
+                artist_deatils.save()
+                new_song.save()
+                tag1, tag2, tag3 = tags.split(",")
+                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag.save()
+
+        else:
+            form = SongUploadForm()
+        return render(request, "PitchApp/UploadSong.html", {"form": form})
 
 
-def FormCheck(request):
-    form = SongUploadForm()
-    return render(request, "FormCheck.html", {"form": form})
+# def FormCheck(request):
+#     form = SongUploadForm()
+#     return render(request, "FormCheck.html", {"form": form})
