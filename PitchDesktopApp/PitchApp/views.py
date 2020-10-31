@@ -53,13 +53,16 @@ def LoginView(request):
         password = request.POST["password"]
         user = authenticate(request=request, username=username, password=password)
         # print(user)
-        login(request=request, user=user)
-        # print("Login successful")
-        logged_in_user = User.objects.get(username=username)
-        if logged_in_user.is_user:
-            return redirect("/pitch/accounts/user_home")
-        if logged_in_user.is_artist:
-            return redirect("/pitch/accounts/artist_home")
+        if user is not None:
+            login(request=request, user=user)
+            # print("Login successful")
+            logged_in_user = User.objects.get(username=username)
+            if logged_in_user.is_user:
+                return redirect("/pitch/accounts/user_home")
+            if logged_in_user.is_artist:
+                return redirect("/pitch/accounts/artist_home")
+        else:
+            return render(request, "ErrorPage.html")
     else:
         form = AuthenticationForm()
     return render(request, "PitchApp/Login.html", {"form": form})
