@@ -130,6 +130,8 @@ def UploadSong(request):
         else:
             form = SongUploadForm()
         return render(request, "PitchApp/UploadSong.html", {"form": form})
+    else:
+        return render(request, "ErrorPage.html")
 
 
 # def FormCheck(request):
