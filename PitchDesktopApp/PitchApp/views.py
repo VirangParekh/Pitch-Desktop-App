@@ -1,17 +1,22 @@
-from django.shortcuts import render, redirect
+from django.http import request
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import User, Audio, Album, Artist, Song, Tag
+from .models import Podcast, User, Audio, Album, Artist, Song, Tag
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
     AlbumUploadForm,
     SongUploadForm,
+    PodcastUploadForm,
 )
 
 
+<<<<<<< HEAD
+=======
 from django.http import JsonResponse
+>>>>>>> 6a107d3a84085cbc6ce52bc9a78ebf43f5eca55d
 # Create your views here.
 
 
@@ -120,7 +125,9 @@ def UploadSong(request):
                     audio_file=audio_file,
                 )
                 artist_deatils = Artist.objects.filter(user=request.user.id)
-                album = Album.objects.filter(artist=artist_deatils.id, title=album_name)
+                album = Album.objects.get_or_create(
+                    artist=artist_deatils.id, title=album_name
+                )
                 new_song = Song(audio_id=audio.id, album_id=album.id)
                 audio.save()
                 artist_deatils.save()
@@ -136,10 +143,73 @@ def UploadSong(request):
         return render(request, "ErrorPage.html")
 
 
+@login_required(login_url="/pitch/accounts/login")
+def UploadPodcast(request):
+    if request.user.is_artist:
+        if request.method == "POST":
+            form = SongUploadForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data["title"]
+                duration = form.cleaned_data["duration"]
+                audio_file = form.cleaned_data["audio_file"]
+                tags = form.cleaned_data["tags"]
+                # album_name = form.cleaned_data["album_name"]
+                audio = Audio(
+                    title=title,
+                    duration=duration,
+                    times_played=0,
+                    audio_file=audio_file,
+                )
+                artist_deatils = Artist.objects.filter(user=request.user.id)
+                # album = Album.objects.get_or_create(
+                #     artist=artist_deatils.id, title=album_name
+                # )
+                new_podcast = Podcast(audio_id=audio.id)
+                audio.save()
+                artist_deatils.save()
+                new_podcast.save()
+                tag1, tag2, tag3 = tags.split(",")
+                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag.save()
+
+        else:
+            form = PodcastUploadForm()
+        return render(request, "PitchApp/UploadPodcast.html", {"form": form})
+    else:
+        return render(request, "ErrorPage.html")
+
+
 # def FormCheck(request):
 #     form = SongUploadForm()
 #     return render(request, "FormCheck.html", {"form": form})
 
+
+def SearchBarView(request):
+    return render(request, "PitchApp/SearchBar.html")
+
+
+def SearchResultView(request):
+    item_type = request.GET["item_type"]
+    query = request.GET["search_bar"]
+    query_list = Audio.objects.filter(title__icontains=query).values_list(
+        "id", flat=True
+    )
+    all_songs = Song.objects.all()
+    all_podcasts = Podcast.objects.all()
+    all_results = []
+    if item_type == "Song":
+        for each_song in all_songs:
+            if each_song.audio_id in query_list:
+                all_results.append(Audio.objects.get(id=each_song.audio_id))
+    if item_type == "Podcast":
+        for each_podcast in all_podcasts:
+            if each_podcast.audio_id in query_list:
+                all_results.append(Audio.objects.get(id=each_podcast.audio_id))
+    return render(request, "PitchApp/SearchReults.html", {"all_results": all_results})
+
+
+def AlbumUpdateView(request, album_id):
+    pass
 def Queue(request):
     audio_files = Audio.objects.all()
     return render(request, 'Drafts/audioQueue.html', {'audio_files':audio_files})
