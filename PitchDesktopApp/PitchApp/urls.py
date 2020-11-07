@@ -29,6 +29,8 @@ urlpatterns = [
     path("accounts/logout", LogoutView, name="logout"),
     path("album_upload", UploadAlbum, name="album_upload"),
     path("song_upload", UploadSong, name="song_upload"),
-    path("form_check", FormCheck, name="form_check"),
+    # path("form_check", FormCheck, name="form_check"),
+    path("search_bar", SearchBarView, name="search_bar"),
+    path("search_results", SearchResultView, name="search_results"),
     path("", HomeView, name="home"),
 ]

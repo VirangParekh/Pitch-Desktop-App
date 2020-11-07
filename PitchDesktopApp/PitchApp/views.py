@@ -1,14 +1,16 @@
-from django.shortcuts import render, redirect
+from django.http import request
+from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import User, Audio, Album, Artist, Song, Tag
+from .models import Podcast, User, Audio, Album, Artist, Song, Tag
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
     AlbumUploadForm,
     SongUploadForm,
 )
+
 
 # Create your views here.
 
@@ -118,7 +120,9 @@ def UploadSong(request):
                     audio_file=audio_file,
                 )
                 artist_deatils = Artist.objects.filter(user=request.user.id)
-                album = Album.objects.filter(artist=artist_deatils.id, title=album_name)
+                album = Album.objects.get_or_create(
+                    artist=artist_deatils.id, title=album_name
+                )
                 new_song = Song(audio_id=audio.id, album_id=album.id)
                 audio.save()
                 artist_deatils.save()
@@ -137,3 +141,27 @@ def UploadSong(request):
 # def FormCheck(request):
 #     form = SongUploadForm()
 #     return render(request, "FormCheck.html", {"form": form})
+
+
+def SearchBarView(request):
+    return render(request, "PitchApp/SearchBar.html")
+
+
+def SearchResultView(request):
+    item_type = request.GET["item_type"]
+    query = request.GET["search_bar"]
+    query_list = Audio.objects.filter(title__icontains=query).values_list(
+        "id", flat=True
+    )
+    all_songs = Song.objects.all()
+    all_podcasts = Podcast.objects.all()
+    all_results = []
+    if item_type == "Song":
+        for each_song in all_songs:
+            if each_song.audio_id in query_list:
+                all_results.append(Audio.objects.get(id=each_song.audio_id))
+    if item_type == "Podcast":
+        for each_podcast in all_podcasts:
+            if each_podcast.audio_id in query_list:
+                all_results.append(Audio.objects.get(id=each_podcast.audio_id))
+    return render(request, "PitchApp/SearchReults.html", {"all_results": all_results})
