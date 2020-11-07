@@ -202,3 +202,7 @@ def SearchResultView(request):
             if each_podcast.audio_id in query_list:
                 all_results.append(Audio.objects.get(id=each_podcast.audio_id))
     return render(request, "PitchApp/SearchReults.html", {"all_results": all_results})
+
+
+def AlbumUpdateView(request, album_id):
+    pass
