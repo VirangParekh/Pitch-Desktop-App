@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sign up</title>
     <script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
     <style type="text/css">
         * {
@@ -34,7 +34,7 @@
             font-weight: 550;
         }
 
-        input {
+        .box {
             width: 100%;
             appearance: none;
             background-image: none;
@@ -51,6 +51,16 @@
             padding: 14px;
             box-shadow: rgb(189, 189, 189) 0px 0px 0px 1px inset;
         }
+
+        .username_para {
+            margin-bottom: 5px;
+        }
+
+        .gender {
+            display: inline;
+            font-weight: 300;
+        }
+
         button {
             border: 0px;
             border-radius: 500px;
@@ -100,15 +110,30 @@
     <div class="container">
         <hr>
         <br>
-        <h2>To continue, log in to Spotify.</h2>
-        <form method='POST'>
-        {% csrf_token %}
-            <label for="{{form.username.id_for_label}}">Username</label>
-            {{form.username}}
-            <label for="form.password.id_for_label">Password</label>
-            {{form.password}}
-            <button type="submit">Log in</button>
-            <p class="existing_user">Don't have an account ?<a href='{%url 'normal_user_signup'%}'>Sign up</a></p>
+        <h2>Sign up for free to start listening.</h2>
+        <form>
+            <label for="email">What's your email?</label>
+            <input type="email" class='box'>
+            <label for="email">Confirm your email</label>
+            <input type="email" class='box'>
+            <label for="email">Create a password</label>
+            <input type="password" class='box'>
+            <label for="email">What should we call you?</label>
+            <input type="text" class='box'>
+            <p class="username_para">This appear on your profile</p>
+            <label for="email">What's your date of birth?</label>
+            <input type="date" class='box'>
+            <label for="gender">What's your gender?</label>
+            <span>
+                <input type="radio" name="gender" value='Male' class='gender'>
+                <label for="male" class='gender'>Male</label><br>
+                <input type="radio" name="gender" value="female" class='gender'>
+                <label for="female" class='gender'>Female</label><br>
+                <input type="radio" name="gender" value="non-binary" class='gender'>
+                <label for="non-binary" class='gender'>non-binary</label>
+            </span>
+            <button>Sign Up</button>
+            <p class="existing_user">Have an account?<a href="#">Log in.</a></p>
         </form>
     </div>
 </body>

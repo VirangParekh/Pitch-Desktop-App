@@ -1,0 +1,152 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.player {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  background-color: #282828;
+  display: flex;
+  justify-content: space-between;
+}
+
+.player > div {
+  flex: 1 1 0px;
+  width: auto;
+}
+
+.details {
+  flex-grow: 1;
+  width: 33%;
+  display: grid;
+  grid-gap: 2px;
+  grid-template-columns: 1fr 2fr 1fr;
+}
+
+.track-art {
+  width: 55px;
+  height: 55px;
+  margin: 15px;
+  background-image: url("https://images.pexels.com/photos/262034/pexels-photo-262034.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+  background-size: cover;
+}
+
+.track-name {
+  margin-top: 30px;
+  color: white;
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+
+.track-artist {
+  color: #b3b3b3;
+  margin-bottom: 2px;
+  font-size: 14px;
+}
+
+.fa-heart {
+  flex-grow: 1;
+  margin-top: 35px;
+  color: #b3b3b3;
+}
+.fa-heart:hover {
+  color: white;
+}
+
+.mediaController {
+  display: grid;
+  width: 33%;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1.5fr 1fr;
+  flex-grow: 2;
+  width: auto;
+  text-align: center;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  color: #b3b3b3;
+  text-align: center;
+  font-size: 25px;
+}
+.playpause-track,
+.prev-track,
+.next-track {
+  margin: 0 20px;
+}
+
+.playpause-track:hover,
+.prev-track:hover,
+.next-track:hover {
+  transform: scale(1.1);
+  color: white;
+}
+.slider_container {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+/* Modify the appearance of the slider */
+.seek_slider,
+.volume_slider {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 5px;
+  background: grey;
+  opacity: 0.7;
+  -webkit-transition: 0.2s;
+  transition: opacity 0.2s;
+}
+
+/* Modify the appearance of the slider thumb */
+.seek_slider::-webkit-slider-thumb,
+.volume_slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  background: white;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.seek_slider:hover,
+.volume_slider:hover {
+  opacity: 1;
+}
+
+.seek_slider {
+  width: 500px;
+  height: 4px;
+}
+.volume_slider {
+  height: 4px;
+  width: 100px;
+  transform: translate(300px, 45px);
+}
+.volume {
+  position: relative;
+  width: 33%;
+  justify-content: right;
+  flex-wrap: 1;
+}
+
+.current-time,
+.total-duration {
+  color: #b3b3b3;
+  margin: 0 15px;
+  font-size: 13px;
+}
+
+.fa-volume-up {
+  color: #b3b3b3;
+  transform: translate(290px, 40px);
+}

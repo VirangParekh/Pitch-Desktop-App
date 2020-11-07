@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simple Music Player</title>
+  <!-- Load FontAwesome icons -->
+  <script
+      src="https://kit.fontawesome.com/0b78f2b1e5.js"
+      crossorigin="anonymous"
+    ></script>
+
+  <!-- Load the custom CSS style file -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+    <body>
+        <div class="player">
+            <div class="details">
+                <div class="track-art"></div> 
+                <div>
+                    <div class="track-name">Track Name</div>
+                    <div class="track-artist">Track Artist</div>
+                </div>
+                <i class="far fa-heart"></i>
+            </div>
+            <div class="mediaController">
+                <div class="buttons">
+                    <div class="prev-track" onclick="prevTrack()"><i class="fa fa-step-backward"></i></div>
+                    <div class="playpause-track" onclick="playpauseTrack()"><i class="fa fa-play-circle "></i></div>
+                    <div class="next-track" onclick="nextTrack()"><i class="fa fa-step-forward"></i></div>
+                </div>
+                <div class="slider_container">
+                    <div class="current-time">00:00</div>
+                    <input type="range" min="1" max="100" value="0" class="seek_slider" onchange="seekTo()">
+                    <div class="total-duration">00:00</div>
+                </div>
+            </div>
+            <div class="slider_container volume">
+                <i class="fa fa-volume-up"></i>
+                <input type="range" min="1" max="100" value="99" class="volume_slider" onchange="setVolume()">
+            </div>
+        </div>
+        <script src="player.js"></script>
+    </body>
+</html>

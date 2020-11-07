@@ -1,8 +1,141 @@
-<h1>User SignUp</h1>
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<form method="POST">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">SignUp</button>
-</form>
-{% endblock %}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign up</title>
+    <script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
+    <style type="text/css">
+        * {
+            margin: 10px;
+            padding: 0;
+            font-family: spotify-circular, Helvetica, Arial, sans-serif;
+        }
+
+        .container {
+            margin: auto;
+            width: 35%;
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 30px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            display: block;
+            font-weight: 550;
+        }
+
+        input,select {
+            width: 100%;
+            appearance: none;
+            background-image: none;
+            border: 0px;
+            display: block;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 20px;
+            letter-spacing: 0.25px;
+            width: 100%;
+            background-color: rgb(255, 255, 255);
+            color: rgb(24, 24, 24);
+            border-radius: 4px;
+            padding: 14px;
+            box-shadow: rgb(189, 189, 189) 0px 0px 0px 1px inset;
+        }
+
+        .username_tag {
+            margin-bottom: 5px;
+        }
+
+        button {
+            border: 0px;
+            border-radius: 500px;
+            cursor: default;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            line-height: 1;
+            text-align: center;
+            text-transform: uppercase;
+            touch-action: manipulation;
+            transition-duration: 33ms;
+            transition-property: background-color, border-color, color, box-shadow, filter, transform;
+            user-select: none;
+            vertical-align: middle;
+            padding: 17px 48px;
+            background-color: rgb(29, 185, 84);
+            color: rgb(255, 255, 255);
+            width: 80%;
+            margin-top: 10px;
+            margin-left: 15%;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            transform: scale(1.04);
+            background-color: rgb(30, 215, 96);
+            color: rgb(255, 255, 255);
+        }
+
+        .existing_user {
+            text-align: center;
+        }
+
+        a {
+            color: rgb(29, 185, 84);
+        }
+
+        ul{
+            list-style-type: none;
+            color: red;
+            font-size: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="logo">
+        <a href="#" style="color: inherit; text-decoration:none; text-justify:auto"><i class="fab fa-spotify"></i>Pitch
+        </a>
+    </div>
+    <div class="container">
+        <hr>
+        <br>
+        <h2>Sign up for free to start listening.</h2>
+        <form method="post">
+        {% csrf_token %}
+            {{ form.non_field_errors }}
+            {{form.email.errors}}
+            <label for="{{form.email.id_for_label}}">What's your email?</label>
+            {{form.email}}
+            {{form.email.errors}}
+            <label for="{{form.password1.id_for_label}}">Create a password</label>
+            {{form.password1}}
+            <label for="{{form.password2.id_for_label}}">Confirm your password</label>
+            {{form.password2}}
+            {{form.username.errors}}
+            <label for="{{form.username.id_for_label}}">What should we call you?</label>
+            {{form.username}}
+            <p class="username_tag">This appear on your profile</p>
+            <label for="{{form.age.id_for_label}}">What's your Age?</label>
+            {{form.age}}
+            <label for="{{form.country.id_for_label}}">Which country do you live in?</label>
+            {{form.country}}
+            <button type="submit">Sign Up</button>
+        </form>
+        <p class="existing_user">Have an account?<a href='{%url 'login' %}'>Log in.</a></p>
+    </div>
+</body>
+</html>
+
+<!-- Need to js form validation for password patter and to be samw all so on the age  -->

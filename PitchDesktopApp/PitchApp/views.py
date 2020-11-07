@@ -10,6 +10,8 @@ from .forms import (
     SongUploadForm,
 )
 
+
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -137,3 +139,16 @@ def UploadSong(request):
 # def FormCheck(request):
 #     form = SongUploadForm()
 #     return render(request, "FormCheck.html", {"form": form})
+
+def Queue(request):
+    audio_files = Audio.objects.all()
+    return render(request, 'Drafts/audioQueue.html', {'audio_files':audio_files})
+
+def IncreaseTimesPLayed(request):
+    title_dict = request.GET
+    title = title_dict["title"]
+    audio_file = Audio.objects.get(title = title)
+    times_played = audio_file.times_played
+    audio_file.times_played = times_played + 1
+    audio_file.save()
+    return JsonResponse({"timesPlayed":audio_file.times_played})

@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from .views import *
 
+
 urlpatterns = [
     # path("accounts/", include("django.contrib.auth.urls")),
     path("accounts/signup/artist", ArtistSignUpView, name="artist_signup"),
@@ -29,6 +30,10 @@ urlpatterns = [
     path("accounts/logout", LogoutView, name="logout"),
     path("album_upload", UploadAlbum, name="album_upload"),
     path("song_upload", UploadSong, name="song_upload"),
-    path("form_check", FormCheck, name="form_check"),
+    # path("form_check", FormCheck, name="form_check"),
     path("", HomeView, name="home"),
+    
+    # Testing
+    path("queue", Queue, name="queue"),
+    path("timesplayed", IncreaseTimesPLayed , name="timesPlayed"),
 ]
