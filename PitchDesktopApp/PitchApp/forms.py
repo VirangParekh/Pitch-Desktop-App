@@ -63,9 +63,18 @@ class AudioForm(ModelForm):
 
 
 class SongUploadForm(Form):
-    #title, duration, audio_file, album_name, tag1, tag2, tag3
+    # title, duration, audio_file, album_name, tag1, tag2, tag3
     title = forms.CharField(max_length=100)
     duration = forms.DurationField()
     audio_file = forms.FileField()
     tags = forms.CharField(max_length=40)
     album_name = forms.CharField(max_length=250)
+
+
+class PodcastUploadForm(Form):
+    # title, duration, audio_file, album_name, tag1, tag2, tag3
+    title = forms.CharField(max_length=100)
+    duration = forms.DurationField()
+    audio_file = forms.FileField()
+    tags = forms.CharField(max_length=40)
+    # album_name = forms.CharField(max_length=250)

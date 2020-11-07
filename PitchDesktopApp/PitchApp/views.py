@@ -9,6 +9,7 @@ from .forms import (
     NormalUserSignUpForm,
     AlbumUploadForm,
     SongUploadForm,
+    PodcastUploadForm,
 )
 
 
@@ -134,6 +135,42 @@ def UploadSong(request):
         else:
             form = SongUploadForm()
         return render(request, "PitchApp/UploadSong.html", {"form": form})
+    else:
+        return render(request, "ErrorPage.html")
+
+
+@login_required(login_url="/pitch/accounts/login")
+def UploadPodcast(request):
+    if request.user.is_artist:
+        if request.method == "POST":
+            form = SongUploadForm(request.POST)
+            if form.is_valid():
+                title = form.cleaned_data["title"]
+                duration = form.cleaned_data["duration"]
+                audio_file = form.cleaned_data["audio_file"]
+                tags = form.cleaned_data["tags"]
+                # album_name = form.cleaned_data["album_name"]
+                audio = Audio(
+                    title=title,
+                    duration=duration,
+                    times_played=0,
+                    audio_file=audio_file,
+                )
+                artist_deatils = Artist.objects.filter(user=request.user.id)
+                # album = Album.objects.get_or_create(
+                #     artist=artist_deatils.id, title=album_name
+                # )
+                new_podcast = Podcast(audio_id=audio.id)
+                audio.save()
+                artist_deatils.save()
+                new_podcast.save()
+                tag1, tag2, tag3 = tags.split(",")
+                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag.save()
+
+        else:
+            form = PodcastUploadForm()
+        return render(request, "PitchApp/UploadPodcast.html", {"form": form})
     else:
         return render(request, "ErrorPage.html")
 
