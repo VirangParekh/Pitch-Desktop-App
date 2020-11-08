@@ -3,3 +3,5 @@ env
 *__pycache__*
 *.pyc
 *media*
+static
+admin.cpython-38.pyc

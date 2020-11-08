@@ -5,6 +5,8 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 import datetime
 
 # Create your models here.
+
+
 class User(AbstractUser):
     is_admin = models.BooleanField(default=False)
     is_artist = models.BooleanField(default=False)
@@ -12,7 +14,8 @@ class User(AbstractUser):
 
 
 class Artist(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
     artist_name = models.CharField(verbose_name="Artist Name", max_length=250)
     country = CountryField()
 
@@ -21,8 +24,10 @@ class Artist(models.Model):
 
 
 class NormalUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
-    account_type = models.CharField(verbose_name="Type of Account", max_length=50)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
+    account_type = models.CharField(
+        verbose_name="Type of Account", max_length=50)
     country = CountryField()
     age = models.IntegerField(verbose_name="Age", null=True)
     card = models.CharField(verbose_name="Card Number", max_length=19)
@@ -35,7 +40,8 @@ class Subscription(models.Model):
 
 class Playlist(models.Model):
     user_id = models.OneToOneField(NormalUser, on_delete=models.CASCADE)
-    title = models.CharField(verbose_name="Title of the playlist", max_length=100)
+    title = models.CharField(
+        verbose_name="Title of the playlist", max_length=100)
 
 
 class Creates(models.Model):
@@ -55,7 +61,8 @@ class Album(models.Model):
             MaxValueValidator(datetime.date.today().year),
         ],
     )
-    cover_file = models.ImageField(verbose_name="Album Cover")
+    cover_file = models.ImageField(
+        verbose_name="Album Cover", upload_to='image_files/')
     artist = models.ForeignKey(
         Artist,
         verbose_name="Name of the Artist",
@@ -73,7 +80,8 @@ class Audio(models.Model):
     times_played = models.PositiveIntegerField(
         verbose_name="No. of times played", validators=[MinValueValidator(0)]
     )
-    audio_file = models.FileField(verbose_name="Audio File",upload_to='audio_files/')
+    audio_file = models.FileField(
+        verbose_name="Audio File", upload_to='audio_files/')
 
     def __str__(self):
         return self.title
