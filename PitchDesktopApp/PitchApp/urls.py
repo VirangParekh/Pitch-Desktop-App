@@ -29,6 +29,7 @@ urlpatterns = [
     path("accounts/user_home", UserHomeView, name="user_home"),
     path("accounts/logout", LogoutView, name="logout"),
     path("album_upload", UploadAlbum, name="album_upload"),
+    path("album_update", AlbumUpdateView, name="album_update"),
     path("song_upload", UploadSong, name="song_upload"),
     path("podcast_upload", UploadPodcast, name="podcast_upload"),
     # path("form_check", FormCheck, name="form_check"),
