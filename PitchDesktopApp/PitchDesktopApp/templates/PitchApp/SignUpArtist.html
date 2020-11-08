@@ -114,23 +114,26 @@
         <h2>Sign up to share your talent.</h2>
         <form method="post">
         {% csrf_token %}
-            {{ form.non_field_errors }}
+            {% comment %} {% for err in form.non_field_errors %}
+                <p class="form-error">{{ err }}</p>
+            {% endfor %}
             {{form.email.errors}}
-            <label for="{{form.email.id_for_label}}">Email</label>
+            <label for="{{form.email.id_for_label}}">What's your email?</label>
             {{form.email}}
             {{form.email.errors}}
-            <label for="{{form.password1.id_for_label}}">Password</label>
+            <label for="{{form.password1.id_for_label}}">Create a password</label>
             {{form.password1}}
             <label for="{{form.password2.id_for_label}}">Confirm your password</label>
             {{form.password2}}
             {{form.username.errors}}
-            <label for="{{form.username.id_for_label}}">Username</label>
+            <label for="{{form.username.id_for_label}}">What should we call you?</label>
             {{form.username}}
             <p class="username_tag">This appear on your profile</p>
-            <label for="{{form.artist_name.id_for_label}}">Artist Name</label>
-            {{form.artist_name}}
+            <label for="{{form.age.id_for_label}}">What's your Age?</label>
+            {{form.age}}
             <label for="{{form.country.id_for_label}}">Which country do you live in?</label>
-            {{form.country}}
+            {{form.country}} {% endcomment %}
+            {{form | linebreaks}}
             <button type="submit">Sign Up</button>
         </form>
         <p class="existing_user">Have an account?<a href='{%url 'login' %}'>Log in.</a></p>

@@ -28,6 +28,8 @@ from .forms import (
 )
 from django.http import JsonResponse
 from django.contrib import messages
+from django.core import serializers
+import json
 
 # Create your views here.
 
@@ -92,7 +94,19 @@ def ArtistHomeView(request):
 
 
 def UserHomeView(request):
-    return render(request, "PitchApp/UserHome.html")
+    trending_audio = Audio.objects.all().order_by("-times_played")[0:5]
+    album_list = Album.objects.all()
+    song_list = Song.objects.all()
+    all_albums = []
+    for audio in trending_audio:
+        for song in song_list:
+            if str(audio.title) == str(song.audio_id):
+                for album in album_list:
+                    if str(album.title) == str(song.album_id):
+                        all_albums.append(Album.objects.get(title=song.album_id))
+    print(trending_audio, all_albums)
+    objects_list = list(zip(trending_audio, all_albums))
+    return render(request, "PitchApp/UserHome.html", {"objects_list": objects_list})
 
 
 def LogoutView(request):
@@ -195,7 +209,7 @@ def SearchBarView(request):
     return render(request, "PitchApp/SearchBar.html")
 
 
-def SearchResultView(request):
+def SearchResult(request):
     item_type = request.GET["item_type"]
     print(item_type)
     query = request.GET["search_bar"]
@@ -204,16 +218,20 @@ def SearchResultView(request):
     )
     all_songs = Song.objects.all()
     all_podcasts = Podcast.objects.all()
+    all_albums = []
     all_results = []
     if item_type == "Song":
         for each_song in all_songs:
             if str(each_song.audio_id) in query_list:
                 all_results.append(Audio.objects.get(title=each_song.audio_id))
+                all_albums.append(Album.objects.get(title=each_song.album_id))
     if item_type == "Podcast":
         for each_podcast in all_podcasts:
             if str(each_podcast.audio_id) in query_list:
                 all_results.append(Audio.objects.get(title=each_podcast.audio_id))
-    return render(request, "PitchApp/SearchReults.html", {"all_results": all_results})
+    print(all_results)
+    objects_list = list(zip(all_results, all_albums))
+    return render(request, "PitchApp/SearchReults.html", {"objects_list": objects_list})
 
 
 @login_required(login_url="/pitch/accounts/login")
@@ -256,6 +274,7 @@ def AddToPlaylistView(request, audio_id):
             audio_id=audio_id, playlist_id=favourites_playlist.id
         )
         feature_obj.save()
+    return JsonResponse({"Hello": "successfull"})
 
 
 @login_required(login_url="/pitch/accounts/login")
