@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import Podcast, User, Audio, Album, Artist, Song, Tag
+from .models import Features, Playlist, Podcast, User, Audio, Album, Artist, Song, Tag
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
@@ -224,3 +224,11 @@ def IncreaseTimesPLayed(request):
     audio_file.times_played = times_played + 1
     audio_file.save()
     return JsonResponse({"timesPlayed": audio_file.times_played})
+
+
+def AddToPlaylistView(request, audio_id):
+    favourites_playlist = Playlist.objects.get(title="Favourites")
+    feature_obj = Features.objects.create(
+        audio_id=audio_id, playlist_id=favourites_playlist.id
+    )
+    feature_obj.save()

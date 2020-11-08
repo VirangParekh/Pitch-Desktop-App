@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm, Form
 from django.contrib.auth.forms import UserCreationForm
-from .models import User, Artist, NormalUser, Album, Audio, Song
+from .models import Playlist, User, Artist, NormalUser, Album, Audio, Song
 from django.db import transaction
 from django_countries.fields import CountryField
 
