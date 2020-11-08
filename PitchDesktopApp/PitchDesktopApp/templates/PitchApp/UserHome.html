@@ -49,26 +49,14 @@
 			<div class="explore" id="trending"><br>
 				<section id="new-hindi-release">
 					<h3>Trending</h3><br>
+          {% for audio,album in objects_list %}
 					<div class="container">
 						<div class="card">
-							<img src="{% static 'album.jpg'%}"><br>
-							<h4> ALBUM OF THE YEAR</h4>
+							<img src="{{album.cover_file.url}}"><br>
+							<h4>{{audio.title}}</h4>
 						</div>
-						{% comment %} {% for audio in trending_list %}
-              {{audio.title}}
-              {% for song in song_list %}
-                {% ifequal song.audio_id audio_title %}{{song.audio_id}}
-                  {% for album in album_list %}
-                    {% if song.album_id == album.title %}
-                      {{album.title}}                    
-                    {% else %}
-                    {% endif %}
-                  {% endfor %}
-                {% endifequal %}  
-              {% endfor %}
-                <br>
-            {% endfor %} {% endcomment %}
 					</div>
+          {% endfor %}
         </section>
       </div>
       <div id="search-result"></div>

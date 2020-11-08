@@ -52,7 +52,8 @@ def LoginView(request):
         form = AuthenticationForm(request.POST)
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(request=request, username=username, password=password)
+        user = authenticate(
+            request=request, username=username, password=password)
         if user is not None:
             login(request=request, user=user)
             logged_in_user = User.objects.get(username=username)
@@ -81,14 +82,17 @@ def UserHomeView(request):
     trending_audio = Audio.objects.all().order_by('-times_played')[0:5]
     album_list = Album.objects.all()
     song_list = Song.objects.all()
+    all_albums = []
     for audio in trending_audio:
         for song in song_list:
-            if audio.title == song.audio_id:
+            if str(audio.title) == str(song.audio_id):
                 for album in album_list:
-                    if album.title == song.album_id:
-                        print(audio, song, album)
-    print(trending_audio)
-    return render(request, "PitchApp/UserHome.html", {"trending_list": trending_audio, "album_list": album_list, "song_list": song_list})
+                    if str(album.title) == str(song.album_id):
+                        all_albums.append(
+                            Album.objects.get(title=song.album_id))
+    print(trending_audio, all_albums)
+    objects_list = list(zip(trending_audio, all_albums))
+    return render(request, "PitchApp/UserHome.html", {"objects_list": objects_list})
 
 
 def LogoutView(request):
@@ -136,7 +140,8 @@ def UploadSong(request):
                 artist_deatils.save()
                 new_song.save()
                 tag1, tag2, tag3 = tags.split(",")
-                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag = Tag(audio_id=audio.id, tag1=tag1,
+                               tag2=tag2, tag3=tag3)
                 song_tag.save()
 
         else:
@@ -172,7 +177,8 @@ def UploadPodcast(request):
                 artist_deatils.save()
                 new_podcast.save()
                 tag1, tag2, tag3 = tags.split(",")
-                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag = Tag(audio_id=audio.id, tag1=tag1,
+                               tag2=tag2, tag3=tag3)
                 song_tag.save()
 
         else:
@@ -250,6 +256,7 @@ def AddToPlaylistView(request, audio_id):
             audio_id=audio_id, playlist_id=favourites_playlist.id
         )
         feature_obj.save()
+    return JsonResponse({"Hello": "successfull"})
 
 
 @login_required(login_url="/pitch/accounts/login")
@@ -266,6 +273,7 @@ def AlbumStats(request, album_id):
             stats.append([audio_id, times_played])
         return render(request, "PitchApp/AlbumStats.html", {"stats": stats})
 
+
 def Trending(request):
     audios = Audio.objects.all().order_by('-times_played')
-    return render(request, "PitchApp/Trending.html", {'audios':audios})
+    return render(request, "PitchApp/Trending.html", {'audios': audios})
