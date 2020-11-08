@@ -226,9 +226,30 @@ def IncreaseTimesPLayed(request):
     return JsonResponse({"timesPlayed": audio_file.times_played})
 
 
+@login_required(login_url="/pitch/accounts/login")
 def AddToPlaylistView(request, audio_id):
-    favourites_playlist = Playlist.objects.get(title="Favourites")
-    feature_obj = Features.objects.create(
-        audio_id=audio_id, playlist_id=favourites_playlist.id
-    )
-    feature_obj.save()
+    if request.user.is_user:
+        favourites_playlist = Playlist.objects.get(title="Favourites")
+        feature_obj = Features.objects.create(
+            audio_id=audio_id, playlist_id=favourites_playlist.id
+        )
+        feature_obj.save()
+
+
+@login_required(login_url="/pitch/accounts/login")
+def AlbumStats(request, album_id):
+    if request.user.is_artist:
+        album = Album.objects.get(id=album_id, artist=request.user.id)
+        album_title = getattr(album, "title")
+        songs = Song.objects.filter(album_id=album_title)
+        stats = []
+        for song in songs:
+            audio_id = getattr(song, "audio_id")
+            audio = Audio.objects.get(title=audio_id)
+            times_played = getattr(audio_id, "times_played")
+            stats.append([audio_id, times_played])
+        return render(request, "PitchApp/AlbumStats.html", {"stats": stats})
+
+def Trending(request):
+    audios = Audio.objects.all().order_by('-times_played')
+    return render(request, "PitchApp/Trending.html", {'audios':audios})
