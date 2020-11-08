@@ -13,7 +13,8 @@ from .forms import (
 )
 from django.http import JsonResponse
 from django.contrib import messages
-
+from django.core import serializers
+import json
 # Create your views here.
 
 
@@ -78,7 +79,17 @@ def ArtistHomeView(request):
 
 
 def UserHomeView(request):
-    return render(request, "PitchApp/UserHome.html")
+    trending_audio = Audio.objects.all().order_by('-times_played')[0:5]
+    album_list = Album.objects.all()
+    song_list = Song.objects.all()
+    for audio in trending_audio:
+        for song in song_list:
+            if audio.title == song.audio_id:
+                for album in album_list:
+                    if album.title == song.album_id:
+                        print(audio, song, album)
+    print(trending_audio)
+    return render(request, "PitchApp/UserHome.html", {"trending_list": trending_audio, "album_list": album_list, "song_list": song_list})
 
 
 def LogoutView(request):
@@ -183,7 +194,7 @@ def SearchBarView(request):
     return render(request, "PitchApp/SearchBar.html")
 
 
-def SearchResultView(request):
+def SearchResult(request):
     item_type = request.GET["item_type"]
     print(item_type)
     query = request.GET["search_bar"]
@@ -192,16 +203,21 @@ def SearchResultView(request):
     )
     all_songs = Song.objects.all()
     all_podcasts = Podcast.objects.all()
+    all_albums = []
     all_results = []
     if item_type == "Song":
         for each_song in all_songs:
             if str(each_song.audio_id) in query_list:
                 all_results.append(Audio.objects.get(title=each_song.audio_id))
+                all_albums.append(Album.objects.get(title=each_song.album_id))
     if item_type == "Podcast":
         for each_podcast in all_podcasts:
             if str(each_podcast.audio_id) in query_list:
-                all_results.append(Audio.objects.get(title=each_podcast.audio_id))
-    return render(request, "PitchApp/SearchReults.html", {"all_results": all_results})
+                all_results.append(Audio.objects.get(
+                    title=each_podcast.audio_id))
+    print(all_results)
+    objects_list = list(zip(all_results, all_albums))
+    return render(request, "PitchApp/SearchReults.html", {"objects_list": objects_list})
 
 
 def AlbumUpdateView(request, album_id):

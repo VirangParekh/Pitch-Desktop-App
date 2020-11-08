@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
-	<link rel="stylesheet" type="text/css" href="{% static 'home_style.css'%}"></style>
+	<link rel="stylesheet" type="text/css" href="{% static 'home_style.css'%}">
 </head>
 <body>
 	<div class="root">
@@ -16,14 +16,8 @@
 					<span>PITCH</span>
 				</div>
 				<ul class="list">
-					<li>
-						<img src="{%static 'home.jpg' %}">
-						<span>HOME</span>
-					</li>
-					<li>
-						<img src="{%static 'lib.jpg' %}">
-						<span>YOUR LIBRARY</span>
-					</li>
+					<li><a href="{% url 'user_home' %}" ><img src="{%static 'home.jpg' %}"><spam> HOME</spam></a></li>
+					<li><a href="{% url 'user_home' %}" ><img src="{%static 'lib.jpg' %}"> <spam> YOUR LIBRARY  </spam></a></li>
 				</ul>
 				<div class="playlist">
 					<h3>PLAYLIST</h3>
@@ -38,60 +32,46 @@
 		<div class="main">
 			<div class="top-bar">
 				<div class="search-wrapper">
-			      	<form method="GET" action="{% url 'search_results'%}">
+        <form method="GET" action="/pitch/search_results">
 					<input type="search" name="search_bar" id="search_bar" placeholder="   Search"/>
 					<select name="item_type" id="item_type">
 						<option value="Song">Song</option>
 						<option value="Podcast">Podcast</option>
 					</select>
 					<button type="submit" id="search_btn" onclick="search()">Search</button>
-					</form>
+          </form>
           </div>
           <div class="account-logout">
             <li><a href="#">{{ user.get_username }}</a></li>
             <li><a href="{%url 'logout'%}">Logout</a></li>
           </div>
 			</div>
-			<div class="explore"><br>
+			<div class="explore" id="trending"><br>
 				<section id="new-hindi-release">
-					<h3> New Releases Hindi</h3><br>
+					<h3>Trending</h3><br>
 					<div class="container">
 						<div class="card">
 							<img src="{% static 'album.jpg'%}"><br>
 							<h4> ALBUM OF THE YEAR</h4>
 						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
-						<div class="card">
-							<img src="album.jpg"><br>
-							<h4> ALBUM OF THE YEAR</h4>
-						</div>
+						{% comment %} {% for audio in trending_list %}
+              {{audio.title}}
+              {% for song in song_list %}
+                {% ifequal song.audio_id audio_title %}{{song.audio_id}}
+                  {% for album in album_list %}
+                    {% if song.album_id == album.title %}
+                      {{album.title}}                    
+                    {% else %}
+                    {% endif %}
+                  {% endfor %}
+                {% endifequal %}  
+              {% endfor %}
+                <br>
+            {% endfor %} {% endcomment %}
 					</div>
         </section>
-        <div class="search-result">no search</div>
-			</div>
+      </div>
+      <div id="search-result"></div>
 		</div>
 	</div>
 	<div class="player">

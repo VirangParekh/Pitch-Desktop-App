@@ -33,7 +33,7 @@ urlpatterns = [
     path("podcast_upload", UploadPodcast, name="podcast_upload"),
     # path("form_check", FormCheck, name="form_check"),
     path("search_bar", SearchBarView, name="search_bar"),
-    path("search_results", SearchResultView, name="search_results"),
+    path("search_results", SearchResult, name="search_results"),
     # path("form_check", FormCheck, name="form_check"),
     path("", HomeView, name="home"),
     # Testing
