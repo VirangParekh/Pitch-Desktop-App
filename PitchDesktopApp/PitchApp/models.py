@@ -106,3 +106,22 @@ class Tag(models.Model):
 
 class Podcast(models.Model):
     audio_id = models.ForeignKey(Audio, on_delete=models.CASCADE)
+    album_id = models.ForeignKey(Album, on_delete=models.CASCADE)
+
+
+class ArtistBackUp(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    artist_name = models.CharField(verbose_name="Artist Name", max_length=250)
+    country = CountryField()
+
+
+class AudioBackUp(models.Model):
+    title = models.CharField(verbose_name="Audio Title", max_length=100)
+    duration = models.DurationField(verbose_name="Duration")
+    times_played = models.PositiveIntegerField(
+        verbose_name="No. of times played", validators=[MinValueValidator(0)]
+    )
+    audio_file = models.FileField(verbose_name="Audio File", upload_to="audio_files/")
+
+    def __str__(self):
+        return self.title
