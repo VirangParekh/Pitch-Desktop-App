@@ -73,7 +73,7 @@ class Audio(models.Model):
     times_played = models.PositiveIntegerField(
         verbose_name="No. of times played", validators=[MinValueValidator(0)]
     )
-    audio_file = models.FileField(verbose_name="Audio File",upload_to='audio_files/')
+    audio_file = models.FileField(verbose_name="Audio File", upload_to="audio_files/")
 
     def __str__(self):
         return self.title

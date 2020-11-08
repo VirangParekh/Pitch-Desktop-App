@@ -2,4 +2,4 @@ env
 .vscode
 *__pycache__*
 *.pyc
-*media*
+admin.cpython-38.pyc
