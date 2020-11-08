@@ -74,3 +74,8 @@ class PodcastUploadForm(Form):
     audio_file = forms.FileField()
     tags = forms.CharField(max_length=40)
     album_name = forms.CharField(max_length=250)
+
+
+class SubscriptionForm(Form):
+    card = forms.CharField(max_length=19)
+    due_date = forms.DateField()

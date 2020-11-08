@@ -109,13 +109,24 @@ class ArtistBackUp(models.Model):
     country = CountryField()
 
 
-class AudioBackUp(models.Model):
-    title = models.CharField(verbose_name="Audio Title", max_length=100)
-    duration = models.DurationField(verbose_name="Duration")
-    times_played = models.PositiveIntegerField(
-        verbose_name="No. of times played", validators=[MinValueValidator(0)]
+class AlbumBackUp(models.Model):
+    title = models.CharField(
+        verbose_name="Album Title", max_length=250, default="Single"
     )
-    audio_file = models.FileField(verbose_name="Audio File", upload_to="audio_files/")
+    year = models.PositiveIntegerField(
+        verbose_name="Year of Release",
+        default=datetime.date.today().year,
+        validators=[
+            MinValueValidator(1857),
+            MaxValueValidator(datetime.date.today().year),
+        ],
+    )
+    cover_file = models.ImageField(verbose_name="Album Cover", upload_to="image_files/")
+    artist = models.ForeignKey(
+        Artist,
+        verbose_name="Name of the Artist",
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return self.title

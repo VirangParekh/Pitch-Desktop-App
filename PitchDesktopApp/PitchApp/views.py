@@ -1,15 +1,30 @@
+from datetime import datetime, date
 from django.http import request
 from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import Features, Playlist, Podcast, User, Audio, Album, Artist, Song, Tag
+from .models import (
+    AlbumBackUp,
+    Features,
+    NormalUser,
+    Playlist,
+    Podcast,
+    User,
+    Audio,
+    Album,
+    Artist,
+    Song,
+    Tag,
+    Subscription,
+)
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
     AlbumUploadForm,
     SongUploadForm,
     PodcastUploadForm,
+    SubscriptionForm,
 )
 from django.http import JsonResponse
 from django.contrib import messages
@@ -206,7 +221,14 @@ def AlbumUpdateView(request, album_id):
     if request.user.is_artist:
         album_obj = Album.objects.get(id=album_id, artist=request.user.id)
         form = AlbumUploadForm(request.POST or None, instance=album_obj)
-        if form.is_valid():
+        if form.is_valid() and album_obj is not None:
+            backup_album = AlbumBackUp(
+                title=album_obj.title,
+                year=album_obj.year,
+                cover_file=album_obj.cover_file,
+                artist=album_obj.artist,
+            )
+            backup_album.save()
             form.save()
         return render(request, "PitchApp/UpdateAlbum.html", {"form": form})
 
@@ -250,6 +272,29 @@ def AlbumStats(request, album_id):
             stats.append([audio_id, times_played])
         return render(request, "PitchApp/AlbumStats.html", {"stats": stats})
 
+
 def Trending(request):
-    audios = Audio.objects.all().order_by('-times_played')
-    return render(request, "PitchApp/Trending.html", {'audios':audios})
+    audios = Audio.objects.all().order_by("-times_played")
+    return render(request, "PitchApp/Trending.html", {"audios": audios})
+
+
+def SubscriptionView(request):
+    if request.user.is_user:
+        context = {}
+        if request.method == "POST":
+            form = SubscriptionForm(request.POST)
+            context["form"] = form
+            if form.is_valid():
+                user_get = NormalUser(user=request.user.id)
+                user_get.card = form.cleaned_data["card"]
+                due_date = form.cleaned_data["due_date"]
+                subscription = Subscription(user_id=request.user.id, due_date=due_date)
+                checkout_price = ((due_date - date.today()).days) * 3.33
+                context["price"] = checkout_price
+                user_get.save()
+                subscription.save()
+                return redirect("/")
+        else:
+            form = SubscriptionForm()
+            context["form"] = form
+        return render(request, "PitchApp/Subscription.html", context)

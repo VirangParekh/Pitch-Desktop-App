@@ -43,5 +43,6 @@ urlpatterns = [
     # Testing
     path("queue", Queue, name="queue"),
     path("timesplayed", IncreaseTimesPLayed, name="timesPlayed"),
-    path("tending", Trending, name="trending"),
+    path("trending", Trending, name="trending"),
+    path("subscription", SubscriptionView, name="subscription"),
 ]
