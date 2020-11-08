@@ -89,6 +89,15 @@
         a {
             color: rgb(29, 185, 84);
         }
+
+        .alert.alert-success{
+            font-size: 16px;
+        }
+        .close {
+            font-size: 16px;
+            text-decoration: none;
+            color: red;
+        }
     </style>
 </head>
 
@@ -101,12 +110,14 @@
         <hr>
         <br>
         <h2>To continue, log in to Spotify.</h2>
-        <form method='POST'>
-        {% csrf_token %}
-            <label for="{{form.username.id_for_label}}">Username</label>
-            {{form.username}}
-            <label for="form.password.id_for_label">Password</label>
-            {{form.password}}
+        <form method="post">{% csrf_token %}
+            {% for message in messages %}
+                    <div class="alert alert-success">
+                        <a class="close" href="#" data-dismiss="alert">×</a>
+                        {{ message }}
+                    </div>
+            {% endfor %}
+            {{form}}
             <button type="submit">Log in</button>
             <p class="existing_user">Don't have an account ?<a href='{%url 'normal_user_signup'%}'>Sign up</a></p>
         </form>

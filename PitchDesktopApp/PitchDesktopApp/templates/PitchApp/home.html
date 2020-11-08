@@ -147,7 +147,7 @@
 
         .banner-container .btn {
             position: absolute;
-            top: 85%;
+            top: 90%;
             left: 50%;
             transform: translate(-50%, -50%);
             -ms-transform: translate(-50%, -50%);
@@ -205,9 +205,9 @@
     <div class="banner-container">
         <img src="{% static 'banner.png' %}" alt="Learning is Everything">
         {% if user.is_authenticated %}
-        <button class="btn">Get Web Player</button>
+        <a href="{%url 'user_home'%}"><button class="btn">Get Web Player</button></a>
         {% else %}
-        <button class="btn">Get Pitch Free</button>
+        <a href="{%url 'login'%}"><button class="btn">Get Pitch Free</button></a>
         {% endif %}
     </div>
     <footer>
@@ -231,7 +231,7 @@
                     <div class="">
                         <ul>
                             <p>Communites</p>
-                            <li><a href="#">For Artists</a></li>
+                            <li><a href="{%url 'artist_signup'%}">For Artists</a></li>
                             <li><a href="#">Developers</a></li>
                             <li><a href="#">Brands</a></li>
                             <li><a href="#">Investors</a></li>

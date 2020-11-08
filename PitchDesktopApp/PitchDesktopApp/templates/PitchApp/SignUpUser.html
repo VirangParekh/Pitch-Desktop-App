@@ -98,7 +98,7 @@
         ul{
             list-style-type: none;
             color: red;
-            font-size: 20px;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -114,7 +114,9 @@
         <h2>Sign up for free to start listening.</h2>
         <form method="post">
         {% csrf_token %}
-            {{ form.non_field_errors }}
+            {% comment %} {% for err in form.non_field_errors %}
+                <p class="form-error">{{ err }}</p>
+            {% endfor %}
             {{form.email.errors}}
             <label for="{{form.email.id_for_label}}">What's your email?</label>
             {{form.email}}
@@ -130,7 +132,8 @@
             <label for="{{form.age.id_for_label}}">What's your Age?</label>
             {{form.age}}
             <label for="{{form.country.id_for_label}}">Which country do you live in?</label>
-            {{form.country}}
+            {{form.country}} {% endcomment %}
+            {{form | linebreaks}}
             <button type="submit">Sign Up</button>
         </form>
         <p class="existing_user">Have an account?<a href='{%url 'login' %}'>Log in.</a></p>

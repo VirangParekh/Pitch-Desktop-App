@@ -12,6 +12,7 @@ from .forms import (
     PodcastUploadForm,
 )
 from django.http import JsonResponse
+from django.contrib import messages
 
 # Create your views here.
 
@@ -47,25 +48,21 @@ def LoginView(request):
         if request.user.is_artist:
             return redirect("/pitch/accounts/artist_home")
     if request.method == "POST":
-        # print("Enter POST")
         form = AuthenticationForm(request.POST)
-        print("Form Initialized")
-        # print("Valid Form")
         username = request.POST["username"]
-        # print(username)
         password = request.POST["password"]
-        user = authenticate(request=request, username=username, password=password)
-        # print(user)
+        user = authenticate(
+            request=request, username=username, password=password)
         if user is not None:
             login(request=request, user=user)
-            # print("Login successful")
             logged_in_user = User.objects.get(username=username)
             if logged_in_user.is_user:
                 return redirect("/pitch/accounts/user_home")
             if logged_in_user.is_artist:
                 return redirect("/pitch/accounts/artist_home")
         else:
-            return render(request, "ErrorPage.html")
+            messages.error(request, 'username or password not correct')
+            return redirect('login')
     else:
         form = AuthenticationForm()
     return render(request, "PitchApp/Login.html", {"form": form})
@@ -86,7 +83,7 @@ def UserHomeView(request):
 
 def LogoutView(request):
     logout(request)
-    return render(request, "PitchApp/Logout.html")
+    return redirect('home')
 
 
 @login_required(login_url="/pitch/accounts/login")
@@ -129,7 +126,8 @@ def UploadSong(request):
                 artist_deatils.save()
                 new_song.save()
                 tag1, tag2, tag3 = tags.split(",")
-                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag = Tag(audio_id=audio.id, tag1=tag1,
+                               tag2=tag2, tag3=tag3)
                 song_tag.save()
 
         else:
@@ -165,7 +163,8 @@ def UploadPodcast(request):
                 artist_deatils.save()
                 new_podcast.save()
                 tag1, tag2, tag3 = tags.split(",")
-                song_tag = Tag(audio_id=audio.id, tag1=tag1, tag2=tag2, tag3=tag3)
+                song_tag = Tag(audio_id=audio.id, tag1=tag1,
+                               tag2=tag2, tag3=tag3)
                 song_tag.save()
 
         else:
