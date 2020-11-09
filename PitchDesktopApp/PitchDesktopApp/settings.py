@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_countries",
     "PitchApp",
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [
