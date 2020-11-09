@@ -128,31 +128,24 @@
         button:hover {
             transform:scale(1.1);
         }
-
-        .playtrack{
-            display: inline-block;
-            
-        }
-
         .col4-btn{
-            transform: translate(0,-28%);
+            transform: translate(0,+10%);
+		}
+		.col1-btn{
+            transform: translate(10%,-20%);
         }
 
-        .col4-btn .fa-heart{
+        .col1-btn .fa-heart{
             transform: scale(1.25);
             
         }
-        .col4-btn .fa-play-circle{
-            transform: scale(1.5);
-            margin-left: 50px;
-        }
 
         .col4-btn .fa-play-circle:hover {
-            transform:scale(1.75);
+            transform:scale(1.25);
             color: #1ed760;
         }
 
-        .col4-btn .fa-heart:hover {
+        .col1-btn .fa-heart:hover {
             transform:scale(1.5);
             color: #1ed760;
         }
@@ -208,7 +201,7 @@
                             </tr>
                             {% for audio,album in objects_list %}
                             <tr>
-                                <td class="col1">1</td>
+                                <td class="col1-btn"><div class="like" onclick='playlistadd("{{ audio.title }}" )'><i class="far fa-heart"></i>   </div></td>
                                 <td class="col2">
                                     <div class="item">
                                         <img src="{{ album.cover_file.url}}">
@@ -218,8 +211,7 @@
                                     </div>
                                 </td>
                                 <td class="col3">{{album.title}}</td>
-                                <td class="col4-btn"><div class="like" onclick='playlistadd("{{ audio.title }}" )'><i class="far fa-heart"></i>   </div>
-                                                 <div class="playtrack" onclick='add("{{ audio.title }}","{{ audio.audio_file.url}}","{{ album.cover_file.url}}" )'><i class="fa fa-play-circle"></i></div>
+                                <td class="col4-btn"><div class="playtrack" onclick='add("{{ audio.title }}","{{ audio.audio_file.url}}","{{ album.cover_file.url}}" )'><i class="fa fa-play-circle fa-2x"></i></div>
                                 </td>
                             </tr>
                             {% endfor %}

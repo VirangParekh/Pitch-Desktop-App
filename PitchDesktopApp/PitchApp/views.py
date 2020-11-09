@@ -75,23 +75,31 @@ def HomeView(request):
 
 
 def ArtistHomeView(request):
-    return render(request, "PitchApp/ArtistHome.html")
+    if request.user.is_artist:
+        album_titles = Album.objects.filter(artist=request.user.id)
+        stats = []
+        for title in album_titles:
+            album_times_played = 0
+            songs = Song.objects.filter(
+                album_id=title)
+            for song in songs:
+                audio = Audio.objects.get(title=song.audio_id)
+                album_times_played += getattr(audio, "times_played")
+            stats.append([title, album_times_played])
+    return render(request, "PitchApp/ArtistHome.html", {"stats": stats})
 
 
 @login_required(login_url="/pitch/accounts/login")
 def AlbumStatsHomeView(request):
     if request.user.is_artist:
-        album_titles = Album.objects.filter(artist=request.user.id).values_list(
-            "title", flat=True
-        )
+        album_titles = Album.objects.filter(artist=request.user.id)
         stats = []
-
         for title in album_titles:
             album_times_played = 0
             songs = Song.objects.filter(
-                album_id=title).values_list("audio_id", flat=False)
+                album_id=title)
             for song in songs:
-                audio = Audio.objects.get(title=song)
+                audio = Audio.objects.get(title=song.audio_id)
                 album_times_played += getattr(audio, "times_played")
             stats.append([title, album_times_played])
         return render(request, "PitchApp/AlbumStatsHome.html", {"stats": stats})
@@ -243,7 +251,7 @@ def SearchResult(request):
 @login_required(login_url="/pitch/accounts/login")
 def AlbumUpdateView(request, album_id):
     if request.user.is_artist:
-        album_obj = Album.objects.get(id=album_id, artist=request.user.id)
+        album_obj = Album.objects.get(title=album_id, artist=request.user.id)
         form = AlbumUploadForm(
             request.POST or None, request.FILES or None, instance=album_obj
         )
@@ -292,16 +300,16 @@ def AddToPlaylistView(request):
 @login_required(login_url="/pitch/accounts/login")
 def AlbumStats(request, album_id):
     if request.user.is_artist:
-        album = Album.objects.get(id=album_id, artist=request.user.id)
+        album = Album.objects.get(title=album_id, artist=request.user.id)
         album_title = getattr(album, "title")
-        songs = Song.objects.filter(album_id=album_title)
+        songs = Song.objects.filter(album_id=album)
         stats = []
         for song in songs:
             audio_id = getattr(song, "audio_id")
             audio = Audio.objects.get(title=audio_id)
             times_played = getattr(audio_id, "times_played")
             stats.append([audio_id, times_played])
-        return render(request, "PitchApp/AlbumStats.html", {"stats": stats})
+        return render(request, "PitchApp/AlbumStats.html", {"stats": stats, "album": album})
 
 
 def Trending(request):

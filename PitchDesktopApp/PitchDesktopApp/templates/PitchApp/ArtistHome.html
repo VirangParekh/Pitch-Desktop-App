@@ -37,30 +37,28 @@
       </span>
     </div>
   </nav>
-  <div class="container-fluid">
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Album cover</th>
-          <th scope="col">Title</th>
-          <th scope="col">Stats</th>
-          <th scope="col">Edit</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row">1</th>
-          <td>Mark</td>
-          <td>Otto</td>
-          <td>@mdo</td>
-        </tr>
-        
-        
-      </tbody>
-    </table>
-    {% for i in stats %}
-<p>{{ i.0 }} - {{ i.1 }}</p>
-{% endfor %}
+  <div class="container" style="width: 80%;">
+    <div class="album py-5 bg-light">
+    <div class="row">
+      {% for i in stats %}
+      <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+              <img class="bd-placeholder-img card-img-top" height="225" src={{ i.0.cover_file.url}}>
+              <div class="card-body">
+                <p class="card-text">{{ i.0.title }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                  <div class="btn-group">
+                    <a href="/pitch/album_stats/{{ i.0.title }}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+                    <a href="/pitch/album_update/{{ i.0.title }}"><button type="button" class="btn btn-sm btn-outline-secondary">Edit</button></a>
+                  </div>
+                  <small class="text-muted">{{ i.1 }} views</small>
+                </div>
+              </div>
+            </div>
+          </div>
+  {% endfor %} 
+    </div>
+    </div>
   </div>
 </body>
 </html>
