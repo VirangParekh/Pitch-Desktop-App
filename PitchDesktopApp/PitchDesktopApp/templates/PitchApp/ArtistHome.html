@@ -58,6 +58,9 @@
         
       </tbody>
     </table>
+    {% for i in stats %}
+<p>{{ i.0 }} - {{ i.1 }}</p>
+{% endfor %}
   </div>
 </body>
 </html>

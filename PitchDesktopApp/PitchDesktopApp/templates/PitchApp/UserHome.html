@@ -42,21 +42,23 @@
           </form>
           </div>
           <div class="account-logout">
-            <li><a href="#">{{ user.get_username }}</a></li>
+            <li><a href="{%url 'payment'%}">{{ user.get_username }}</a></li>
             <li><a href="{%url 'logout'%}">Logout</a></li>
           </div>
 			</div>
 			<div class="explore" id="trending"><br>
 				<section id="new-hindi-release">
-					<h3>Trending</h3><br>
+          <h3>Trending</h3><br>
+          <div class="container">
           {% for audio,album in objects_list %}
-					<div class="container">
+					
 						<div class="card">
-							<img src="{{album.cover_file.url}}"><br>
+							<img src="{{album.cover_file.url}}" alt="{{album.title}}"><br>
 							<h4>{{audio.title}}</h4>
 						</div>
-					</div>
+					
           {% endfor %}
+        </div>
         </section>
       </div>
       <div id="search-result"></div>

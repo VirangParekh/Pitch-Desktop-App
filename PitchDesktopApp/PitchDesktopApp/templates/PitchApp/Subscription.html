@@ -1,8 +1,0 @@
-<h1>Subscription</h1>
-
-<form method="POST" enctype="multipart/form-data">
-  {% csrf_token %} {{ form.as_p }}
-  <button type="submit">Buy Subscription</button>
-</form>
-
-<h3>Your Final Price is: {{ checkout_price }} + 18% GST</h3>
