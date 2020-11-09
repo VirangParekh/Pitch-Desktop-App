@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static%}
+<head>
+	<meta charset="UTF-8">
+	<title>Pitch</title>
+	<script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'home_style.css'%}">
+    
+	<style type="text/css">
+		html, body {
+		  height: 100%;
+		  width: 100%;
+		  margin: 0;
+		}
+		.main-result{
+			height: 100%;
+			width: 100%;
+		}
+		.album{
+			display: flex;
+			flex-direction: row;
+			height: 50%;
+			width: 100%;
+			background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+			background-color: #323030;
+		}
+		.album img{
+			margin-left: 20px;
+			margin-top: 50px;
+			width: 20%;
+			height: 80%;
+		}
+		.album-info{
+			display: flex;
+			flex-direction: column;
+			width: 70%;
+			height: 100%;
+			color: #FFFFFF;
+		}
+		.type{
+			margin-top: 100px;
+			margin-left: 20px;
+		}
+		.title{
+			margin-left: 20px;
+			font-size: 32px;
+		}
+		.description{
+			margin-left: 20px;
+		}
+		h1, h2, h3{
+			margin: 0px;
+			word-wrap: break-word;
+		}
+		.songs{
+			height: 100%;
+			width: 100%;
+			background-image: linear-gradient(transparent, rgba(0, 0, 0, 0.5));
+			background-color: #1C1A1A;
+			overflow-y: scroll;
+		}
+		.songs::-webkit-scrollbar {
+		  width: 10px;
+		}
+		.songs::-webkit-scrollbar-track {
+		  background: #1C1A1A; 
+		}
+		.songs::-webkit-scrollbar-thumb {
+		  background: #888; 
+		}
+		.songs::-webkit-scrollbar-thumb:hover {
+		  background: #555; 
+		}
+		table{
+			width: 100%;
+			padding: 10px;
+			color: #FFFFFF;
+			border-spacing: 0px;
+			text-align: left;
+		}
+		td{
+			height: 50px;
+        }
+        
+		.first-row th{
+			border-bottom: 1px solid #302E2E;
+			font-size: 24px;
+		}
+		.first-row:hover{
+			background-color: #1C1A1A;
+		}
+		.col1{
+			padding: 10px;
+			width: 3%;
+		}
+		.col2{
+			width: 50%;
+			padding: 10px;
+			overflow: hidden;
+		}
+		.col3{
+			width: 30%;
+			padding: 10px;
+			overflow: hidden;
+
+		}
+		.col4{
+			width: 17%;
+            padding: 10px;
+            margin-bottom: 20px;
+		}
+		.item{
+			width: 100%;
+			height: 100%;
+			display: flex;
+			flex-direction: row;
+		}
+		.item img{
+			width: 48px;
+			height: 48px;
+		}
+		.item span{
+			margin-left: 10px;
+			margin-top: 5px;
+			vertical-align: middle;
+		}
+        button:hover {
+            transform:scale(1.1);
+        }
+        .col4-btn{
+            transform: translate(0,+10%);
+		}
+		.col1-btn{
+            transform: translate(10%,-20%);
+        }
+
+        .col1-btn .fa-heart{
+            transform: scale(1.25);
+            
+        }
+
+        .col4-btn .fa-play-circle:hover {
+            transform:scale(1.25);
+            color: #1ed760;
+        }
+
+        .col1-btn .fa-heart:hover {
+            transform:scale(1.5);
+            color: #1ed760;
+        }
+	</style>
+</head>
+<body>
+	<div class="root">
+		<div class="nav-bar">
+			<nav class="nav">
+				<div class="logo">
+					<img src="{%static 'icon.jpg' %}">
+					<span>PITCH</span>
+				</div>
+				<ul class="list">
+					<li><a href="{% url 'user_home' %}" ><img src="{%static 'home.jpg' %}"><spam> HOME</spam></a></li>
+					<li><a href="{% url 'user_home' %}" ><img src="{%static 'lib.jpg' %}"> <spam> YOUR LIBRARY  </spam></a></li>
+				</ul>
+				<div class="playlist">
+					<h3>PLAYLIST</h3>
+					<button type="button" class="addBtn">
+						<img src="{%static 'addBtn.jpg' %}">
+						<span>Playlist</p>
+					</button>
+				</div>
+			</nav>
+		</div>
+		<div class="main">
+			<div class="top-bar">
+				<div class="search-wrapper">
+                    <form method="GET" action="/pitch/search_results">
+					    <input type="search" name="search_bar" id="search_bar" placeholder="   Search"/>
+                        <select name="item_type" id="item_type">
+                            <option value="Song">Song</option>
+                            <option value="Podcast">Podcast</option>
+                        </select>
+					    <button type="submit" id="search_btn" onclick="search()">Search</button>
+                    </form>
+                </div>
+                <div class="account-logout">
+                    <li><a href="#">{{ user.get_username }}</a></li>
+                     <li><a href="{%url 'logout'%}">Logout</a></li>
+                 </div>
+			</div>
+			<div class="explore" id="trending"><br>
+                <div class="main-result">
+                    <div class="songs">
+                        <table>
+                            <tr class="first-row">
+                                <th class="col1">#</th>
+                                <th class="col2">Title</th>
+                                <th class="col3">Album</th>
+                                <th class="col4">Add</th>
+                            </tr>
+                            {% for audio,album in objects_list %}
+                            <tr>
+                                <td class="col1-btn"><div class="like" onclick='playlistadd("{{ audio.title }}" )'><i class="far fa-heart"></i>   </div></td>
+                                <td class="col2">
+                                    <div class="item">
+                                        <img src="{{ album.cover_file.url}}">
+                                        <span>
+                                            {{audio.title}}<br>
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="col3">{{album.title}}</td>
+                                <td class="col4-btn"><div class="playtrack" onclick='add("{{ audio.title }}","{{ audio.audio_file.url}}","{{ album.cover_file.url}}" )'><i class="fa fa-play-circle fa-2x"></i></div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+		</div>
+	</div>
+	<div class="player">
+      <div class="details">
+        <div class="track-art"></div>
+        <div>
+          <div class="track-name">Track Name</div>
+          <div class="track-artist">Track Artist</div>
+        </div onclick="like()">
+        <i class="far fa-heart"></i>
+      </div>
+      <div class="mediaController">
+        <div class="buttons">
+          <div class="prev-track" onclick="prevTrack()">
+            <i class="fa fa-step-backward"></i>
+          </div>
+          <div class="playpause-track" onclick="playpauseTrack()">
+            <i class="fa fa-play-circle"></i>
+          </div>
+          <div class="next-track" onclick="nextTrack()">
+            <i class="fa fa-step-forward"></i>
+          </div>
+        </div>
+        <div class="slider_container">
+          <div class="current-time">00:00</div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="0"
+            class="seek_slider"
+            onchange="seekTo()"
+          />
+          <div class="total-duration">00:00</div>
+        </div>
+      </div>
+      <div class="slider_container volume">
+        <i class="fa fa-volume-up"></i>
+        <input
+          type="range"
+          min="1"
+          max="100"
+          value="99"
+          class="volume_slider"
+          onchange="setVolume()"
+        />
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src= "{% static 'musicPlayer.js'%}" ></script>
+</body>
+</html>

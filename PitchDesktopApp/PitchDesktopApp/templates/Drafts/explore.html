@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<script src="https://kit.fontawesome.com/0b78f2b1e5.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="home_style.css"></style>
+</head>
+<body>
+	<div class="root">
+		<div class="nav-bar">
+			<nav class="nav">
+				<div class="logo">
+					<img src="icon.jpg">
+					<span>PITCH</span>
+				</div>
+				<ul class="list">
+					<li style="background-color: #FFFFFF;">
+						<img src="home.jpg">
+						<span style="color: #000000;">HOME</span>
+					</li>
+					<li>
+						<img src="lib.jpg">
+						<span>YOUR LIBRARY</span>
+					</li>
+				</ul>
+				<div class="playlist">
+					<h3>Playlists</h3>
+					<button type="button" class="addBtn">
+						<img src="addBtn.jpg">
+						<span> CREATE PLAYLIST</span>
+					</button>
+					
+				</div>
+			</nav>
+		</div>
+		<div class="main">
+			<div class="top-bar">
+				<div class="search-wrapper">
+			      <input type="text" placeholder="   Search" id="search_bar" />
+			      <select>
+			        <option style="color: #000000;">Album</option>
+			        <option style="color: #000000;">Song</option>
+			        <option style="color: #000000;">Podcast</option>
+			      </select>
+			      <button id="search_btn">Search</button>
+			    </div>
+
+			    <div id="search_result"></div>
+			</div>
+			<div class="explore"><br>
+				<section id="new-hindi-release">
+					<h3> New Releases Hindi</h3><br>
+					<div class="container">
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+
+
+					</div>
+				</section>
+				<section id="new-english-release">
+					<h3> New Releases English</h3><br>
+					<div class="container">
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+					</div>
+				</section>
+				<section id="charts">
+					<h3> Charts</h3><br>
+					<div class="container">
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+					</div>
+				</section>
+				<section id="your-playlist">
+					<h3> Your Playlist</h3><br>
+					<div class="container">
+						<div class="card">
+							<img src="album.jpg"><br>
+							<h4> ALBUM OF THE YEAR</h4>
+						</div>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+	<div class="player">
+      <div class="details">
+        <div class="track-art"></div>
+        <div>
+          <div class="track-name">Track Name</div>
+          <div class="track-artist">Track Artist</div>
+        </div>
+        <i class="far fa-heart"></i>
+      </div>
+      <div class="mediaController">
+        <div class="buttons">
+          <div class="prev-track" onclick="prevTrack()">
+            <i class="fa fa-step-backward"></i>
+          </div>
+          <div class="playpause-track" onclick="playpauseTrack()">
+            <i class="fa fa-play-circle"></i>
+          </div>
+          <div class="next-track" onclick="nextTrack()">
+            <i class="fa fa-step-forward"></i>
+          </div>
+        </div>
+        <div class="slider_container">
+          <div class="current-time">00:00</div>
+          <input
+            type="range"
+            min="1"
+            max="100"
+            value="0"
+            class="seek_slider"
+            onchange="seekTo()"
+          />
+          <div class="total-duration">00:00</div>
+        </div>
+      </div>
+      <div class="slider_container volume">
+        <i class="fa fa-volume-up"></i>
+        <input
+          type="range"
+          min="1"
+          max="100"
+          value="99"
+          class="volume_slider"
+          onchange="setVolume()"
+        />
+      </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src= "add.js" ></script>
+	
+</body>
+</html>
