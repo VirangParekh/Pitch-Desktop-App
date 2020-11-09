@@ -3,7 +3,18 @@ from django.shortcuts import get_object_or_404, render, redirect, HttpResponse
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-from .models import Features, Playlist, Podcast, User, Audio, Album, Artist, Song, Tag, AlbumBackUp
+from .models import (
+    Features,
+    Playlist,
+    Podcast,
+    User,
+    Audio,
+    Album,
+    Artist,
+    Song,
+    Tag,
+    AlbumBackUp,
+)
 from .forms import (
     ArtistSignUpForm,
     NormalUserSignUpForm,
@@ -15,6 +26,7 @@ from django.http import JsonResponse
 from django.contrib import messages
 from django.core import serializers
 import json
+
 # Create your views here.
 
 
@@ -24,7 +36,7 @@ def ArtistSignUpView(request):
         if form.is_valid():
             user = form.save()
             login(request=request, user=user)
-            return redirect("/pitch/")
+            return redirect("/pitch/accounts/artist_home")
     else:
         form = ArtistSignUpForm()
     return render(request, "PitchApp/SignUpArtist.html", {"form": form})
@@ -52,8 +64,7 @@ def LoginView(request):
         form = AuthenticationForm(request.POST)
         username = request.POST["username"]
         password = request.POST["password"]
-        user = authenticate(
-            request=request, username=username, password=password)
+        user = authenticate(request=request, username=username, password=password)
         if user is not None:
             login(request=request, user=user)
             logged_in_user = User.objects.get(username=username)
@@ -80,8 +91,7 @@ def ArtistHomeView(request):
         stats = []
         for title in album_titles:
             album_times_played = 0
-            songs = Song.objects.filter(
-                album_id=title)
+            songs = Song.objects.filter(album_id=title)
             for song in songs:
                 audio = Audio.objects.get(title=song.audio_id)
                 album_times_played += getattr(audio, "times_played")
@@ -96,8 +106,7 @@ def AlbumStatsHomeView(request):
         stats = []
         for title in album_titles:
             album_times_played = 0
-            songs = Song.objects.filter(
-                album_id=title)
+            songs = Song.objects.filter(album_id=title)
             for song in songs:
                 audio = Audio.objects.get(title=song.audio_id)
                 album_times_played += getattr(audio, "times_played")
@@ -106,7 +115,7 @@ def AlbumStatsHomeView(request):
 
 
 def UserHomeView(request):
-    trending_audio = Audio.objects.all().order_by('-times_played')[0:5]
+    trending_audio = Audio.objects.all().order_by("-times_played")[0:5]
     album_list = Album.objects.all()
     song_list = Song.objects.all()
     all_albums = []
@@ -115,8 +124,7 @@ def UserHomeView(request):
             if str(audio.title) == str(song.audio_id):
                 for album in album_list:
                     if str(album.title) == str(song.album_id):
-                        all_albums.append(
-                            Album.objects.get(title=song.album_id))
+                        all_albums.append(Album.objects.get(title=song.album_id))
     for album in all_albums:
         print(album.cover_file)
     objects_list = list(zip(trending_audio, all_albums))
@@ -138,7 +146,7 @@ def UploadAlbum(request):
                 artist_obj = Artist.objects.get(user=request.user.id)
                 album.artist = artist_obj
                 album.save()
-                return redirect('artist_home')
+                return redirect("artist_home")
         else:
             form = AlbumUploadForm()
         return render(request, "PitchApp/UploadAlbum.html", {"form": form})
@@ -163,15 +171,14 @@ def UploadSong(request):
                 )
                 audio.save()
                 artist_deatils = Artist.objects.get(user=request.user.id)
-                album = Album.objects.get(
-                    artist=artist_deatils, title=album_name)
+                album = Album.objects.get(artist=artist_deatils, title=album_name)
                 new_song = Song.objects.create(audio_id=audio, album_id=album)
                 artist_deatils.save()
                 new_song.save()
                 tag1, tag2, tag3 = tags.split(",")
                 song_tag = Tag(audio_id=audio, tag1=tag1, tag2=tag2, tag3=tag3)
                 song_tag.save()
-                return redirect('artist_home')
+                return redirect("artist_home")
 
         else:
             form = SongUploadForm()
@@ -199,20 +206,21 @@ def UploadPodcast(request):
                 )
                 audio.save()
                 artist_deatils = Artist.objects.get(user=request.user.id)
-                album = Album.objects.get(
-                    artist=artist_deatils, title=album_name)
-                new_podcast = Podcast(audio_id=audio, album_id=album)
+                album = Album.objects.get(artist=artist_deatils, title=album_name)
+                new_podcast = Podcast.objects.create(audio_id=audio, album_id=album)
                 artist_deatils.save()
                 new_podcast.save()
                 tag1, tag2, tag3 = tags.split(",")
                 song_tag = Tag(audio_id=audio, tag1=tag1, tag2=tag2, tag3=tag3)
                 song_tag.save()
-                return redirect('artist_home')
+                return redirect("artist_home")
         else:
             form = PodcastUploadForm()
         return render(request, "PitchApp/UploadPodcast.html", {"form": form})
     else:
         return render(request, "ErrorPage.html")
+
+
 # def FormCheck(request):
 #     form = SongUploadForm()
 #     return render(request, "FormCheck.html", {"form": form})
@@ -241,8 +249,8 @@ def SearchResult(request):
     if item_type == "Podcast":
         for each_podcast in all_podcasts:
             if str(each_podcast.audio_id) in query_list:
-                all_results.append(Audio.objects.get(
-                    title=each_podcast.audio_id))
+                all_results.append(Audio.objects.get(title=each_podcast.audio_id))
+                all_albums.append(Album.objects.get(title=each_podcast.album_id))
     print(all_results)
     objects_list = list(zip(all_results, all_albums))
     return render(request, "PitchApp/SearchReults.html", {"objects_list": objects_list})
@@ -264,6 +272,7 @@ def AlbumUpdateView(request, album_id):
             )
             backup_album.save()
             form.save()
+            return redirect("artist_home")
         return render(request, "PitchApp/UpdateAlbum.html", {"form": form})
 
 
@@ -303,18 +312,26 @@ def AlbumStats(request, album_id):
         album = Album.objects.get(title=album_id, artist=request.user.id)
         album_title = getattr(album, "title")
         songs = Song.objects.filter(album_id=album)
+        podcasts = Podcast.objects.filter(album_id=album)
         stats = []
         for song in songs:
             audio_id = getattr(song, "audio_id")
-            audio = Audio.objects.get(title=audio_id)
+            # audio = Audio.objects.get(title=audio_id)
             times_played = getattr(audio_id, "times_played")
             stats.append([audio_id, times_played])
-        return render(request, "PitchApp/AlbumStats.html", {"stats": stats, "album": album})
+        for podcast in podcasts:
+            audio_id = getattr(podcast, "audio_id")
+            # audio = Audio.objects.get(title=audio_id)
+            times_played = getattr(audio_id, "times_played")
+            stats.append([audio_id, times_played])
+        return render(
+            request, "PitchApp/AlbumStats.html", {"stats": stats, "album": album}
+        )
 
 
 def Trending(request):
-    audios = Audio.objects.all().order_by('-times_played')
-    return render(request, "PitchApp/Trending.html", {'audios': audios})
+    audios = Audio.objects.all().order_by("-times_played")
+    return render(request, "PitchApp/Trending.html", {"audios": audios})
 
 
 def PaymentView(request):
